@@ -70,7 +70,7 @@ reduce_while works like reduce except it expects the reducer to return {:cont, a
 
 ``` elixir
 # sum numbers until the sum is greater than or equal to 100
-Enum.reduce_while(1..100, fn 
+Enum.reduce_while(1..100, 0, fn 
     _elem, acc when acc >= 100 -> {:halt, acc}
     elem, acc -> {:cont, acc + elem} 
 end)
@@ -124,6 +124,7 @@ defmodule Puppy do
     defstruct [:puppies, :total_weight]
     def new(puppies), do: %__MODULE__{puppies: puppies}
     def feed_farm(%__MODULE__{puppies: puppies}) do
+      #the value of the accumulator will have the weigh tof the puppies before they are fed!
       {updated_puppy_farm, total_weight} =  Enum.map_reduce(puppies, 0, fn puppy, total_weight -> {Puppy.feed(puppy), total_weight + puppy.weight} end)
       %__MODULE__{puppies: updated_puppy_farm, total_weight: total_weight}
     end
